@@ -1,15 +1,5 @@
-import {
-  Button,
-  Checkbox,
-  Col,
-  Input,
-  InputNumber,
-  Row,
-  Slider,
-  Space,
-  Table,
-} from "antd";
-import React, { useContext, useState } from "react";
+import { Input, Table } from "antd";
+import { useContext } from "react";
 import { ProductContext } from "../../context/ContextProductProvider";
 import Column from "antd/es/table/Column";
 import { Typography, Image } from "antd";
@@ -20,16 +10,8 @@ import FilterSearch from "../../components/FilterSearch";
 import { ModalUpdateProduct } from "../../components/ModalUpdateProduct";
 const { Text } = Typography;
 export const Product = () => {
-  const {
-    setSearchTerm,
-    filteredProducts,
-    onSelectChange,
-    selectedRowKeys,
-    setFilteredProducts,
-    products,
-
-    selectedCategory,
-  } = useContext(ProductContext);
+  const { setSearchTerm, filteredProducts, onSelectChange, selectedRowKeys } =
+    useContext(ProductContext);
 
   const dataMap = filteredProducts.map((product) => {
     return {
@@ -41,13 +23,9 @@ export const Product = () => {
       category: product.category,
       image: product.image,
       created_at: new Date(product.created_at).toLocaleDateString("en-US"),
-      // updated_at: new Date(product.updated_at).toLocaleDateString("en-US"),
     };
   });
-  // const rowSelection = {
-  //   selectedRowKeys,
-  //   onChange: onSelectChange,
-  // };
+ 
   const options = {
     weekday: "long",
     year: "numeric",

@@ -56,35 +56,6 @@ export const AuthContextProvider = ({ children }) => {
 
     setIsLoading(false);
   }, []);
-
-  // const logout = useCallback(async () => {
-  //   setIsLoading(true);
-  //   try {
-  //     const response = await axios.post(
-  //       "https://api.gearfocus.div4.pgtest.co/api/authentication/logout",
-  //       {
-  //         token: localStorage.getItem("userToken"),
-  //       }
-  //     );
-  //     console.log(response.data);
-  //     if (response.data.success) {
-  //       localStorage.removeItem("userToken");
-  //       setIsLoggedIn(false);
-  //       message.success("Logout successfully");
-  //     } else {
-  //       message.error("Logout failed");
-  //     }
-  //   } catch (error) {
-  //     message.error("Logout failed");
-  //   }
-  //   setIsLoading(false);
-  //   setIsLoggedIn(false);
-  //   localStorage.removeItem("userToken");
-  //   setIsLoggedIn(false);
-  //   navigate("/Signin");
-  //   // localStorage.removeItem("userToken");
-  //   // setIsLoggedIn(false);
-  // }, [navigate, setIsLoading, setIsLoggedIn]);
   const logout = useCallback(async () => {
     setIsLoading(true);
     try {

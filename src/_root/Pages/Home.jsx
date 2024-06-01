@@ -1,5 +1,5 @@
-import { Button, Checkbox, Spin, Table, Typography } from "antd";
-import React, { useContext, useState } from "react";
+import { Table, Typography } from "antd";
+import { useContext, useState } from "react";
 import { ContextUserProvider } from "../../context/ContextProvider";
 import { Searchs } from "../../components/Searchs";
 import { DeleteUsers } from "../../components/DeleteUsers";
@@ -9,7 +9,7 @@ import Column from "antd/es/table/Column";
 import { ModalUpdateUsers } from "../../components/ModalUpdateUsers";
 
 export const Home = () => {
-  const { filteredDataUsers, onSelectChange, selectedRowKeys, updateUser } =
+  const { filteredDataUsers, onSelectChange, selectedRowKeys } =
     useContext(ContextUserProvider);
   const [bottom, setBottom] = useState("bottomLeft");
   const dataUserMap = filteredDataUsers.map((user) => ({

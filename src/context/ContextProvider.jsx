@@ -1,12 +1,6 @@
 import { Spin, message } from "antd";
 import axios from "axios";
-import {
-  createContext,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { createContext, useEffect, useMemo, useState } from "react";
 import { LoadingOutlined } from "@ant-design/icons";
 import _ from "lodash";
 export const ContextUserProvider = createContext();
@@ -47,65 +41,33 @@ export const ContextProvider = ({ children }) => {
     setSelectedRowKeys(newSelectedRowKeys);
     console.log("selectedRowKeys changed: ", newSelectedRowKeys);
   };
-  // const handleDelete = async () => {
-  //   // Tạo một mảng các Promise từ việc gọi hàm deleteUser cho mỗi id đã chọn
-  //   const deleteHandle = selectedRowKeys.map((key) => deleteUser(key));
-  //   // Chờ tất cả các Promise hoàn thành
-  //   await Promise.all(deleteHandle);
-  //   // Cập nhật lại danh sách đã chọn sau khi xoá
-  //   setSelectedRowKeys([]);
-  // };
 
   const handleDelete = async () => {
     setIsLoading(true);
 
     try {
-      // Xác định các sản phẩm cần xóa dựa trên selectedRowKeys
-      const selectedProducts = userData.filter((product) =>
-        selectedRowKeys.includes(product.id)
+      // Loop through each selected product and delete it
+      await Promise.all(
+        selectedRowKeys.map(async (id) => {
+          await deleteUser(id);
+        })
       );
 
-      // Tạo mảng lời hứa xóa
-      const deletePromises = selectedProducts.map((product) =>
-        deleteUser(product.id)
+      // Update the state to remove the deleted products
+      const updatedProducts = userData.filter(
+        (product) => !selectedRowKeys.includes(product.id)
       );
-
-      // Chờ tất cả các lời hứa xóa được giải quyết
-      await Promise.all(deletePromises);
-
-      // Cập nhật state và UI
-      setUserData(
-        userData.filter(
-          (product) =>
-            !selectedProducts.some(
-              (selectedProduct) => selectedProduct.id === product.id
-            )
-        )
-      );
-      setFilteredDataUsers(
-        filteredDataUsers.filter(
-          (product) =>
-            !selectedProducts.some(
-              (selectedProduct) => selectedProduct.id === product.id
-            )
-        )
-      );
-      message.success("Delete Users successfully");
+      setUserData(updatedProducts);
+      setSelectedRowKeys([]);
+      message.success("Users deleted successfully");
     } catch (error) {
-      message.error("Delete Users failed: " + error.message);
+      console.error("Error deleting products:", error);
     } finally {
       setIsLoading(false);
-      setSelectedRowKeys([]);
     }
   };
-  // end
-  useEffect(() => {
-    const debouncedFilter = _.debounce(() => {
-      setFilteredDataUsers(filteredData);
-    }, 300);
 
-    debouncedFilter();
-  }, [searchTerm, userData]);
+  // end
 
   const filteredData = useMemo(() => {
     return _.filter(userData, (user) => {
@@ -114,24 +76,14 @@ export const ContextProvider = ({ children }) => {
       return fullName?.includes(searchTerm.toLowerCase());
     });
   }, [searchTerm, userData]);
-  //delete:
-  // const deleteUser = async (id) => {
-  //   setIsLoading(true);
-  //   try {
-  //     const response = await axios.delete(
-  //       `https://fakestoreapi.com/users/${id}`
-  //     );
-  //     console.log(response);
-  //     setUserData(userData.filter((user) => user.id !== id));
-  //     setFilteredDataUsers(filteredDataUsers.filter((user) => user.id !== id));
-  //     message.success("Delete user successfully");
-  //     console.log(response.data);
-  //   } catch (error) {
-  //     message.error("Delete user failed");
-  //   }
-  //   setIsLoading(false);
-  //   usersData();
-  // };
+
+  useEffect(() => {
+    const debouncedFilter = _.debounce(() => {
+      setFilteredDataUsers(filteredData);
+    }, 300);
+
+    debouncedFilter();
+  }, [searchTerm, userData]);
 
   const deleteUser = async (id) => {
     setIsLoading(true);
@@ -140,10 +92,8 @@ export const ContextProvider = ({ children }) => {
         `https://fakestoreapi.com/users/${id}`
       );
       console.log("response product", response);
-      setUserData(userData.filter((user) => user.id !== id));
-      setFilteredDataUsers(filteredDataUsers.filter((user) => user.id !== id));
     } catch (error) {
-      // message.error("Delete product failed: " + error.message);
+      message.error("Error deleting user", error);
     } finally {
       setIsLoading(false);
     }

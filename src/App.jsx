@@ -20,7 +20,6 @@ function App() {
                 {/* public router */}
                 <Route element={<AuthLayout />}>
                   <Route path="/Signin" element={<Signin />} />
-                  {/* <Route path="/SignUp" element={<SignUp />} /> */}
                 </Route>
 
                 {/* private router */}

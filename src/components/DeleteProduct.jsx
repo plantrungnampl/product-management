@@ -40,7 +40,7 @@ export const DeleteProduct = () => {
             color: "rgba(0, 0, 0, 0.85)",
           }}
         >
-          {hasSelected ? `Selected ${selectedRowKeys?.length} items` : ""}
+          {/* {hasSelected ? `Selected ${selectedRowKeys?.length} items` : ""} */}
         </span>
       </div>
     </div>

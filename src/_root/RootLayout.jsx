@@ -6,7 +6,7 @@ import { Headers } from "../components/Headers";
 import { Navigate, Outlet } from "react-router";
 
 import { AuthContext } from "../context/AuthContextProvider";
-const { Header, Footer, Sider, Content } = Layout;
+const { Header, Sider, Content } = Layout;
 
 export const RootLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -65,18 +65,6 @@ export const RootLayout = () => {
           >
             <Outlet />
           </Content>
-          {/* <Footer
-            style={{
-              position: "sticky",
-              bottom: 0,
-              padding: "10px 50px",
-              width: "100%",
-              background: "#ddd",
-              color: "rgba(255, 255, 255, 0.65)",
-            }}
-          >
-            <Footers />
-          </Footer> */}
         </Layout>
       </Layout>
     </Layout>

@@ -19,6 +19,8 @@ export const ContextProductProvider = ({ children }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(1000);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const updateMinPrice = (value) => {
     setMinPrice(value ? value : 0);
   };
@@ -47,7 +49,7 @@ export const ContextProductProvider = ({ children }) => {
     // Cập nhật dữ liệu sản phẩm được lọc
     setFilteredProducts(filteredProducts);
   };
-  const formatPrice = (value) => `$${value}`;
+
   const hasSelected = selectedRowKeys?.length > 0;
   const onSelectChange = (selectedRowKeys) => {
     setSelectedRowKeys(selectedRowKeys);
@@ -106,87 +108,43 @@ export const ContextProductProvider = ({ children }) => {
   useEffect(() => {
     debouncedSearch(searchTerm);
   }, [searchTerm, debouncedSearch]);
-  //   console.log("filteredProducts", filteredProducts);
   // delete Product antd:
+
   const deleteProduct = async (id) => {
-    setIsLoading(true);
     try {
       const response = await axios.delete(
         `https://fakestoreapi.com/products/${id}`
       );
       console.log("response product", response);
-      setProducts(products.filter((product) => product.id !== id));
-      setFilteredProducts(
-        filteredProducts.filter((product) => product.id !== id)
-      );
-      // message.success("Delete product successfully");
     } catch (error) {
-      // message.error("Delete product failed: " + error.message);
-    } finally {
-      setIsLoading(false);
+      message.error("Delete product failed: " + error.message);
     }
   };
-  // const handleDelete = async () => {
-  //   setIsLoading(true);
-  //   try {
-  //     // Tạo một mảng các Promise từ việc gọi hàm deleteProduct cho mỗi id đã chọn
-  //     const deletePromises = selectedRowKeys.filter((id) => deleteProduct(id));
-  //     // Chờ tất cả các Promise hoàn thành
-  //     await Promise.all(deletePromises);
-  //     // Cập nhật lại danh sách đã chọn sau khi xoá
-  //     setSelectedRowKeys([]);
-  //     // Hiển thị thông báo thành công
-  //   } catch (error) {
-  //     // Hiển thị thông báo lỗi
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
+
   const handleDelete = async () => {
     setIsLoading(true);
 
     try {
-      // Xác định các sản phẩm cần xóa dựa trên selectedRowKeys
-      const selectedProducts = products.filter((product) =>
-        selectedRowKeys.includes(product.id)
+      // Lap lai cac san pham va xoa
+      await Promise.all(
+        selectedRowKeys.map(async (id) => {
+          await deleteProduct(id);
+        })
       );
 
-      // Tạo mảng lời hứa xóa
-      const deletePromises = selectedProducts.map((product) =>
-        deleteProduct(product.id)
+      //Cập nhật state để loại bỏ các sản phẩm đã bị xóa
+      const updatedProducts = products.filter(
+        (product) => !selectedRowKeys.includes(product.id)
       );
-
-      // Chờ tất cả các lời hứa xóa được giải quyết
-      await Promise.all(deletePromises);
-
-      // Cập nhật state và UI
-      setProducts(
-        products.filter(
-          (product) =>
-            !selectedProducts.some(
-              (selectedProduct) => selectedProduct.id === product.id
-            )
-        )
-      );
-      setFilteredProducts(
-        filteredProducts.filter(
-          (product) =>
-            !selectedProducts.some(
-              (selectedProduct) => selectedProduct.id === product.id
-            )
-        )
-      );
-      message.success("Delete products successfully");
+      setProducts(updatedProducts);
+      setSelectedRowKeys([]);
+      message.success("Product deleted successfully");
     } catch (error) {
-      message.error("Delete products failed: " + error.message);
+      console.error("Error deleting products:", error);
     } finally {
       setIsLoading(false);
-      setSelectedRowKeys([]);
     }
   };
-  // zzzz
-  const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const handleSearch = async () => {
     try {

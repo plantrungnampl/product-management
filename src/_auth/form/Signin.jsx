@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { Button, Form, Input, Typography } from "antd";
 import { AuthContext } from "../../context/AuthContextProvider";
 
@@ -11,7 +11,7 @@ export const Signin = () => {
     <>
       <Form
         form={form}
-        className="bg-slate-600 rounded-2xl p-5 w-2/4"
+        className="bg-slate-400 rounded-2xl p-5 w-2/4"
         name="basic"
         labelCol={{ span: 6 }}
         wrapperCol={{ span: 12 }}
@@ -26,6 +26,7 @@ export const Signin = () => {
           Login
         </Typography.Title>
         <Form.Item
+          className="font-bold"
           label="Email"
           name="email"
           rules={[
@@ -43,6 +44,7 @@ export const Signin = () => {
         </Form.Item>
 
         <Form.Item
+          className="font-bold"
           label="Password"
           name="password"
           rules={[
@@ -61,7 +63,7 @@ export const Signin = () => {
 
         <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
           <Button type="primary" htmlType="submit">
-            Submit
+            Login
           </Button>
         </Form.Item>
       </Form>

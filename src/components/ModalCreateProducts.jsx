@@ -52,16 +52,7 @@ export const ModalCreateProducts = () => {
     setIsModalOpen(false);
   };
 
-  //   const handleOk = async () => {
-  //     try {
-  //       addProduct(newProduct);
-  //       setProducts([...products, newProduct]);
-  //     } catch (error) {
-  //       message.error("Add product failed");
-  //     }
-  //   };
   const handleOk = async () => {
-    // Ensure the newProduct includes the default rating before adding
     const productToAdd = {
       ...newProduct,
       rating: {
@@ -96,20 +87,9 @@ export const ModalCreateProducts = () => {
   const dummyImageUrl = "https://via.placeholder.com/150";
 
   const handleFileChange = (info) => {
-    // Simulate a successful upload by directly setting the dummy image URL
     setNewProduct({ ...newProduct, image: dummyImageUrl });
     message.success("Image uploaded successfully (simulated)");
   };
-  //   const handleFileChange = (info) => {
-  //     if (info.file.status === "done") {
-  //       // Tạo URL tạm thời cho file để hiển thị ảnh
-  //       const imageUrl = URL.createObjectURL(info.file.originFileObj);
-  //       setNewProduct({ ...newProduct, image: imageUrl });
-  //       message.success(`${info.file.name} file uploaded successfully`);
-  //     } else if (info.file.status === "error") {
-  //       message.error(`${info.file.name} file upload failed.`);
-  //     }
-  //   };
 
   console.log("newProduct", newProduct);
   return (
