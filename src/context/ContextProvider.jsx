@@ -46,14 +46,12 @@ export const ContextProvider = ({ children }) => {
     setIsLoading(true);
 
     try {
-      // Loop through each selected product and delete it
       await Promise.all(
         selectedRowKeys.map(async (id) => {
           await deleteUser(id);
         })
       );
 
-      // Update the state to remove the deleted products
       const updatedProducts = userData.filter(
         (product) => !selectedRowKeys.includes(product.id)
       );
@@ -132,7 +130,6 @@ export const ContextProvider = ({ children }) => {
     } catch (error) {
       hasError = true;
       message.error("Update user failed: " + error.message);
-      // Xử lý lỗi cụ thể tại đây nếu cần
       console.error(error);
     } finally {
       setIsLoading(false);

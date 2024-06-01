@@ -68,7 +68,7 @@ export const AuthContextProvider = ({ children }) => {
       localStorage.removeItem("userToken");
       setIsLoggedIn(false);
       message.success("Logout successfully");
-      navigate("/Signin"); // Navigate after updating the state
+      navigate("/Signin");
     } catch (error) {
       message.error("Logout failed: " + error.message);
     } finally {

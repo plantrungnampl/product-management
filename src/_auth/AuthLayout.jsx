@@ -3,7 +3,6 @@ import { Navigate, Outlet } from "react-router-dom";
 import { AuthContext } from "../context/AuthContextProvider";
 
 export const AuthLayout = () => {
-  // const authentication = false;
   const { isLoggedIn } = useContext(AuthContext);
   return (
     <>
